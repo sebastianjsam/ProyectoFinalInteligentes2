@@ -28,20 +28,20 @@ def modelo1():
     img_shape = (width, height, num_channels)
 
     # Cant elementos a clasifica
-    num_clases = 10
-    cantidad_datos_entenamiento =  [80, 80, 80, 80, 80, 80, 80, 80, 80, 80]
-    cantidad_datos_pruebas = [20,20,20,20,20,20,20,20,20,20]
+    num_clases = 5
+    cantidad_datos_entenamiento =  [20, 20, 20, 20, 20]
+    cantidad_datos_pruebas = [5,5,5,5,5]
 
     ##Carga de los datos
     imagenes, probabilidades = cargarDatos("dataset/train/", num_clases, cantidad_datos_entenamiento, width, height)
     print(imagenes)
 
-
+    print('imprime hasta aqui 1')
     model = Sequential()
 
     # Capa de entrada
     model.add(InputLayer(input_shape=(pixeles,)))
-
+    print('imprime hasta aqui 2')
     # Re armar la imagen
     model.add(Reshape(img_shape))
 
@@ -68,30 +68,31 @@ def modelo1():
     resultados=model.evaluate(x=imagenes_prueba, y=probabilidades_prueba)
     print("METRIC NAMES", model.metrics_names)
     print("RESULTADOS", resultados)
-
+    print('imprime hasta aqui 3')
 
     ## Guardar el modelo
     ruta="models/model_a.h5"
     model.save(ruta)
 
     #Estructura de la red
-
+    print('imprime hasta aqui 5')
     model.summary()
 
     metricResult = model.evaluate(x=imagenes, y=probabilidades)
 
     scnn_pred = model.predict(imagenes_prueba, batch_size=60, verbose=1)
     scnn_predicted = np.argmax(scnn_pred, axis=1)
-
+    print('imprime hasta aqui 6')
     # Creamos la matriz de confusión
     scnn_cm = confusion_matrix(np.argmax(probabilidades_prueba, axis=1), scnn_predicted)
-
+    print('imprime hasta aqui 7')
     # Visualiamos la matriz de confusión
-    scnn_df_cm = pd.DataFrame(scnn_cm, range(9), range(9))
+    scnn_df_cm = pd.DataFrame(scnn_cm, range(4), range(4))
     plt.figure(figsize=(20, 14))
     sn.set(font_scale=1.4)  # for label size
     sn.heatmap(scnn_df_cm, annot=True, annot_kws={"size": 12})  # font size
     plt.show()
+
 
     scnn_report = classification_report(np.argmax(probabilidades_prueba, axis=1), scnn_predicted)
     print("SCNN REPORT", scnn_report)
@@ -105,10 +106,9 @@ def modelo2():
     num_channels = 1
     img_shape = (width, height, num_channels)
 
-    # Cant elementos a clasifica
-    num_clases = 10
-    cantidad_datos_entenamiento =  [80, 80, 80, 80, 80, 80, 80, 80, 80, 80]
-    cantidad_datos_pruebas = [20,20,20,20,20,20,20,20,20,20]
+    num_clases = 5
+    cantidad_datos_entenamiento = [20, 20, 20, 20, 20]
+    cantidad_datos_pruebas = [5, 5, 5, 5, 5]
 
     ##Carga de los datos
     imagenes, probabilidades = cargarDatos("dataset/train/", num_clases, cantidad_datos_entenamiento, width, height)
@@ -164,7 +164,7 @@ def modelo2():
     scnn_cm = confusion_matrix(np.argmax(probabilidades_prueba, axis=1), scnn_predicted)
 
     # Visualiamos la matriz de confusión
-    scnn_df_cm = pd.DataFrame(scnn_cm, range(9), range(9))
+    scnn_df_cm = pd.DataFrame(scnn_cm, range(4), range(4))
     plt.figure(figsize=(20, 14))
     sn.set(font_scale=1.4)  # for label size
     sn.heatmap(scnn_df_cm, annot=True, annot_kws={"size": 12})  # font size
@@ -183,9 +183,9 @@ def modelo3():
     img_shape = (width, height, num_channels)
 
     # Cant elementos a clasifica
-    num_clases = 10
-    cantidad_datos_entenamiento =  [80, 80, 80, 80, 80, 80, 80, 80, 80, 80]
-    cantidad_datos_pruebas = [20,20,20,20,20,20,20,20,20,20]
+    num_clases = 5
+    cantidad_datos_entenamiento = [20, 20, 20, 20, 20]
+    cantidad_datos_pruebas = [5, 5, 5, 5, 5]
 
     ##Carga de los datos
     imagenes, probabilidades = cargarDatos("dataset/train/", num_clases, cantidad_datos_entenamiento, width, height)
@@ -242,7 +242,7 @@ def modelo3():
     scnn_cm = confusion_matrix(np.argmax(probabilidades_prueba, axis=1), scnn_predicted)
 
     # Visualiamos la matriz de confusión
-    scnn_df_cm = pd.DataFrame(scnn_cm, range(9), range(9))
+    scnn_df_cm = pd.DataFrame(scnn_cm, range(4), range(4))
     plt.figure(figsize=(20, 14))
     sn.set(font_scale=1.4)  # for label size
     sn.heatmap(scnn_df_cm, annot=True, annot_kws={"size": 12})  # font size
@@ -287,7 +287,7 @@ def cargarDatos(fase, numeroCategorias, limite, width, height):
     return imagenes_entrenamiento, valores_esperados
 
 def probarModelo(imagen):
-    categorias = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    categorias = ["1", "2", "3", "4", "5"]
 
     width = 128
     height = 128
@@ -302,10 +302,10 @@ def probarModelo(imagen):
 def mostrarAcumulado(acum, img2):
     img = cv2.imread(img2, 0)
     print("El acumulado es: ", acum)
-    cv2.putText(img, 'Total {}'.format(acum), (10, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(img, 'Acomulado {}'.format(acum), (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     cv2.imshow("Imagen", img)
 
 
-#modelo1()
+modelo3()
 
 
